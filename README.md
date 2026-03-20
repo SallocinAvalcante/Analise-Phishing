@@ -21,7 +21,7 @@ O objetivo não foi apenas identificar o golpe, foi entender como a infraestrutu
 
 O e-mail recebido seguia o padrão clássico de **sextortion em massa**:
 
-![EmailMalicioso](evidence/00_email_recebido)
+![EmailMalicioso](evidence/00_email_recebido.png)
 
 - Alega ter acesso a dados pessoais, senhas, arquivos e câmera do dispositivo
 - Exige pagamento de **USD 600 em Bitcoin** em até 1 dia
