@@ -155,7 +155,7 @@ A carteira do endereço no e-mail era apenas a entrada de uma cadeia de lavagem 
 
 Fui então pesquisar a mesma no Blockchain.com para analisar os datalhes públicos delas
 
-**Carteira coletora — `[14id3vCsWLocRamkLqfb3J9jhpxTHPz59m](https://www.blockchain.com/explorer/addresses/btc/14id3vCsWLocRamkLqfb3J9jhpxTHPz59m)`**
+**Carteira coletora — 14id3vCsWLocRamkLqfb3J9jhpxTHPz59m**
 
 ![Blockchain coletora](evidence/05_blockchain_coletora.png)
 
@@ -169,7 +169,7 @@ Fui então pesquisar a mesma no Blockchain.com para analisar os datalhes públic
 
 ![Mixing 20 inputs](evidence/10_blockchain_mixing_flow.png)
 
-A saída da carteira coletora consolidou **20 carteiras diferentes** em uma única transação para a próxima carteira, padrão clássico de mixing para dificultar rastreamento.
+A saída da carteira coletora consolidou **20 carteiras diferentes** em uma única transação para a próxima carteira, padrão clássico de mixing para dificultar rastreamento. 
 
 ![Blockchain consolidadora](evidence/06_blockchain_consolidadora.png)
 ![SegWit](evidence/07_blockchain_segwit.png)
@@ -203,7 +203,12 @@ bc1q7cyrfmck2ffu2ud3rn5l5a8yv6f0chkp0zpemf
         ↓
 [Rastro público encerrado]
 ```
+> **💡 Para verificar as carteiras diretamente:**
 
+> - Coletora: [14id3vCsWLocRamkLqfb3J9jhpxTHPz59m](https://www.blockchain.com/explorer/addresses/btc/14id3vCsWLocRamkLqfb3J9jhpxTHPz59m)
+> - Consolidadora: [1Gi5sqSA6NKfkaPdMu4szv1bzt3XxCyryU](https://www.blockchain.com/explorer/addresses/btc/1Gi5sqSA6NKfkaPdMu4szv1bzt3XxCyryU)
+> - Exchange/Mixer: [bc1q7cyrfmck2ffu2ud3rn5l5a8yv6f0chkp0zpemf](https://www.blockchain.com/explorer/addresses/btc/bc1q7cyrfmck2ffu2ud3rn5l5a8yv6f0chkp0zpemf)
+> - Destino SegWit final: [bc1qvh6rmy6j55t9gr6u29eg4qkmtwswj9r9waawyx](https://www.blockchain.com/explorer/addresses/btc/bc1qvh6rmy6j55t9gr6u29eg4qkmtwswj9r9waawyx)
 ---
 
 ### 6. A Exchange — bc1q7-zpemf
@@ -244,7 +249,7 @@ Nov/2024    → Último DNS resolution de api.brighterfuture.net
 04/03/2026  → E-mail de sextortion recebido
 15/03/2026  → Segundo abuse report no AbuseIPDB
 19/03/2026  → Investigação conduzida. IP ainda ativo
-              Reportado no AbuseIPDB e DigitalOcean
+              Reportado no AbuseIPDB(pendente), FBI IC3 e DigitalOcean
 ```
 
 ---
