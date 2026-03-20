@@ -253,12 +253,12 @@ Nov/2024    → Último DNS resolution de api.brighterfuture.net
 
 O que parecia um golpe simples revelou uma operação sofisticada:
 
-- **Infraestrutura ativa por 3+ anos** no mesmo IP sem takedown
-- **Peel chain** para fragmentar e poluir rastro no blockchain
-- **Migração progressiva** Legacy → SegWit ao longo das camadas
-- **MySQL exposto na porta 3306**, indicando servidor comprometido ou negligente
-- **Volume estimado da operação:**, dezenas de milhões de dólares
-- **Destino final:**, exchange com $2B em volume — rastreamento encerrado
+- **Infraestrutura ativa por 3+ anos** → No mesmo IP sem takedown
+- **Peel chain** → Para fragmentar e poluir rastro no blockchain
+- **Migração progressiva** → Legacy → SegWit ao longo das camadas
+- **MySQL exposto na porta 3306** → Indicando servidor comprometido ou negligente
+- **Volume estimado da operação:** → Dezenas de milhões de dólares
+- **Destino final:** → Exchange com $2B em volume, rastreamento encerrado
 
 A investigação chegou até onde as ferramentas públicas permitem. O próximo passo exigiria dados KYC de exchange via ordem judicial.
 
