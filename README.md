@@ -155,7 +155,7 @@ A carteira do endereço no e-mail era apenas a entrada de uma cadeia de lavagem 
 
 Fui então pesquisar a mesma no Blockchain.com para analisar os datalhes públicos delas
 
-**Carteira coletora — `14id3vCsWLocRamkLqfb3J9jhpxTHPz59m`**
+**Carteira coletora — `[14id3vCsWLocRamkLqfb3J9jhpxTHPz59m](https://www.blockchain.com/explorer/addresses/btc/14id3vCsWLocRamkLqfb3J9jhpxTHPz59m)`**
 
 ![Blockchain coletora](evidence/05_blockchain_coletora.png)
 
