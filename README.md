@@ -11,9 +11,9 @@
 
 Este projeto documenta uma investigação OSINT conduzida a partir de um e-mail de sextortion recebido, partindo dos headers do e-mail até o rastreamento da infraestrutura de servidores e do fluxo de lavagem de dinheiro em Bitcoin.
 
-O objetivo não foi apenas identificar o golpe — foi entender como a infraestrutura funciona, como o dinheiro se move e até onde é possível rastrear usando apenas ferramentas públicas de OSINT e threat intelligence.
+O objetivo não foi apenas identificar o golpe, foi entender como a infraestrutura funciona, como o dinheiro se move e até onde é possível rastrear usando apenas ferramentas públicas de OSINT e threat intelligence.
 
-**Spoiler:** fui atrás de uma pena e achei uma galinha.
+**Spoiler:** fui atrás de uma pena achando que seria um scam aleatorio sem muita operação e achei uma galinha.
 
 ---
 
@@ -21,10 +21,12 @@ O objetivo não foi apenas identificar o golpe — foi entender como a infraestr
 
 O e-mail recebido seguia o padrão clássico de **sextortion em massa**:
 
+![EmailMalicioso](evidence/00_email_recebido)
+
 - Alega ter acesso a dados pessoais, senhas, arquivos e câmera do dispositivo
 - Exige pagamento de **USD 600 em Bitcoin** em até 1 dia
 - Usa linguagem de urgência e intimidação para pressionar a vítima
-- **Nenhuma das informações alegadas é real** — é engenharia social pura
+- **Nenhuma das informações alegadas é real**. É engenharia social pura (famoso, é verdade esse bilhete)
 
 O primeiro passo foi não pagar. O segundo foi investigar.
 
@@ -39,8 +41,6 @@ O primeiro passo foi não pagar. O segundo foi investigar.
 | **Shodan** | Portas abertas e serviços expostos no servidor |
 | **URLScan.io** | Análise de comportamento HTTP do domínio |
 | **Blockchain.com** | Rastreamento de transações Bitcoin |
-| **WHOIS (ARIN)** | Atribuição do bloco IP |
-| **WHOIS (ICANN)** | Registro e status do domínio |
 
 ---
 
@@ -63,14 +63,14 @@ X-MS-Exchange-Organization-SCL: 5
 dest:J;OFR:SpamFilterAuthJ
 ```
 
-O que cada campo revelou:
-- **SPF none** — o domínio não autorizou o IP para envio → spoofing confirmado
-- **DKIM none** — e-mail sem assinatura digital → não autenticado
-- **DMARC fail** — falha total de autenticação → remetente forjado
-- **Return-Path** diferente do `From:` → endereço real do atacante exposto: `microllion@api.brighterfuture.net`
-- **SCL:5 / dest:J** — Microsoft classificou como suspeito e entregou na pasta Junk
+O que cada campo e tag revelou para nós:
+- **SPF none** : o domínio não autorizou o IP para envio → spoofing confirmado
+- **DKIM none** : e-mail sem assinatura digital → não autenticado
+- **DMARC fail** : falha total de autenticação → remetente forjado
+- **Return-Path** : diferente do `From:` → endereço real do atacante exposto: `microllion@api.brighterfuture.net`
+- **SCL:5 / dest:J** : Microsoft classificou como suspeito e entregou na pasta Junk
 
-O `From:` estava spoofado como o próprio endereço da vítima — técnica para aumentar o senso de urgência.
+O `From:` estava spoofado como o próprio endereço da vítima, técnica para aumentar o senso de urgência.
 
 ---
 
@@ -78,57 +78,81 @@ O `From:` estava spoofado como o próprio endereço da vítima — técnica para
 
 **VirusTotal**
 
+Bom ao olhar no Header do e-mail e achar o Ip fiz a coisa mais sensata, procurar em base pública sobre:
+
 ![VirusTotal](evidence/01_virustotal_ip.png)
 
-- 1/94 vendors flagged — IP rotacionado para evasão de blacklists
-- Passive DNS revelou todos os domínios associados ao IP
+- 1/94 vendors flagged — IP rotacionado para evasão de blacklists, por isto poucas flags(já me soa algo mais bem feito do que imaginava rs)
+- Passive DNS(Relations dentro do VirusTotal) revelou todos os domínios associados ao IP, vamos anotar que em breve vamos usar
 
 **AbuseIPDB**
 
+Aproveitando embalo de investigar IP, fui analisar no AbuseIPDB se há reports sobre
+
 ![AbuseIPDB](evidence/02_abuseipdb.png)
 
-- 2 reports de 2 fontes distintas
-- Primeiro report: **27/02/2026** — apenas 5 dias antes do e-mail recebido
+- 2 reports de 2 fontes distintas 
+- Primeiro report: **27/02/2026**, apenas 5 dias antes do e-mail recebido
 - Categorias: Web Spam, Email Spam, Spoofing, Exploited Host, Phishing, Hacking, Bad Web Bot
 - IP **ainda ativo em 19/03/2026**
 
 **Shodan**
 
+Vamos ao nosso queridinho, o Shodan vai servir para entendermos o que pode ter sido a possivel Killchain do atacante e quais portas permitiriam isto
+
 ![Shodan](evidence/03_shodan_ports.png)
 
 | Porta | Serviço | Observação |
 |---|---|---|
-| 22 | SSH — OpenSSH 8.9p1 Ubuntu | Acesso remoto ativo |
-| 80 | HTTP | Servidor web ativo |
-| 443 | HTTPS | Erro TLS — mal configurado |
+| 22 | SSH — OpenSSH 8.9p1 Ubuntu | Acesso remoto ativo ao server |
+| 80 | HTTP | Servidor web ativo no momento |
+| 443 | HTTPS | Erro TLS mal configurado, ou server abandonado |
 | **3306** | **MySQL 8.0.42** | **⚠️ Banco de dados exposto publicamente** |
 
-A porta 3306 exposta é crítica — banco de dados sem firewall, indicando servidor comprometido ou operado negligentemente.
+A porta 3306 exposta é crítica, banco de dados sem firewall, indicando servidor já deve ter sido comprometido ou é operado negligentemente.
 
+Isto pode evidenciar uma possivel killchain(Aqui é especulação com base nos dados, mas pode sim ter sido de outra forma)
+
+Aluga/compromete VPS DigitalOcean
+        ↓
+Instala servidor SMTP (brighterfuture.net)
+        ↓
+Dispara spam em massa com SPF none
+        ↓
+Vítima recebe → paga Bitcoin
+        ↓
+Mixing em camadas → exchange → saque
 ---
 
 ### 3. Investigando os Domínios
+
+Bom levantamos uma boa quantia de informação, permitindo imaginarmos até algumas killchains possiveis, agora vamos focar nestes dominios vinculados que coletamos no UrlScan
 
 **`brighterfuture.net`** — domínio do servidor SMTP
 
 ![URLScan](evidence/04_urlscan_brighterfuture.png)
 
 - Registrado: 08/09/2022 via GoDaddy
-- Status: `clientDeleteProhibited`, `clientTransferProhibited`
+- Status: `clientDeleteProhibited`, `clientTransferProhibited` (ninguém pode deletar o domínio e o domínio não pode ser transferido para outro)
 - URLScan retornou **HTTP 502** — servidor abandonado
 - Expira: 08/09/2026
 
-**`licftluimc.quest`** — domínio no certificado TLS
+O status revela algo legal, o fato dele estar bloqueado indica que o GoDaddy já está realizando investigação sobre
 
-- Nome gerado por algoritmo — padrão **DGA (Domain Generation Algorithm)**
+**`licftluimc.quest`** — domínio identificado no certificado TLS do servidor
+
+- Nome com padrão aleatório, possivelmente gerado por algoritmo (DGA)
 - Certificado Let's Encrypt **expirado em 04/05/2023**
-- Infraestrutura descartável — criada, usada e abandonada
+- Não encontrado no URLScan, domínio inativo ou nunca acessível publicamente
+- Associado ao mesmo IP desde fev/2023 via VirusTotal Relations
 
 ---
 
 ### 4. Rastreamento Bitcoin
+Bom agora que levantamos dados sobre o IP e os DNS envolvidos, fiquei curioso sobre a carteira de bitcoin e como é feito o processo de recebimento
+A carteira do endereço no e-mail era apenas a entrada de uma cadeia de lavagem em múltiplas camadas.
 
-O endereço no e-mail era apenas a entrada de uma cadeia de lavagem em múltiplas camadas.
+Fui então pesquisar a mesma no Blockchain.com para analisar os datalhes públicos delas
 
 **Carteira coletora — `14id3vCsWLocRamkLqfb3J9jhpxTHPz59m`**
 
@@ -144,12 +168,12 @@ O endereço no e-mail era apenas a entrada de uma cadeia de lavagem em múltipla
 
 ![Mixing 20 inputs](evidence/10_blockchain_mixing_flow.png)
 
-A saída da carteira coletora consolidou **20 carteiras diferentes** em uma única transação — padrão clássico de mixing para dificultar rastreamento.
+A saída da carteira coletora consolidou **20 carteiras diferentes** em uma única transação para a próxima carteira, padrão clássico de mixing para dificultar rastreamento.
 
 ![Blockchain consolidadora](evidence/06_blockchain_consolidadora.png)
 ![SegWit](evidence/07_blockchain_segwit.png)
 
-Após a consolidação, o dinheiro passou por múltiplas camadas usando a técnica de **peel chain** — o atacante divide o valor em pequenas transações e frequentemente envia para si mesmo para poluir o log e dificultar análise.
+Após a consolidação, o dinheiro passou por múltiplas camadas usando a técnica de **peel chain**: O atacante divide o valor em pequenas transações e frequentemente envia para si mesmo para poluir o log e dificultar análise. Deixando o Fluxo até então:
 
 ```
 [Vítimas pagam]
@@ -182,25 +206,25 @@ bc1q7cyrfmck2ffu2ud3rn5l5a8yv6f0chkp0zpemf
 ---
 
 ### 6. A Exchange — bc1q-pemf
-
+Por fim ao analisar recebimentos na carteira consolidadora, notei que ela recebe de volta valores após alguns mêses, partindo de outra carteira
 ![Exchange summary](evidence/08_blockchain_pemf_summary.png)
 ![Exchange saída](evidence/09_blockchain_pemf_saida.png)
 
-A carteira `bc1q7cyrfmck2ffu...` (bc1q-pemf) é onde o rastreamento público se encerra:
+A carteira `bc1q7cyrfmck2ffu...` (bc1q-pemf) é onde o rastreamento público se encerra, e nela achamos algumas coisas interessantes:
 
 - **2.839.427 transações**
 - **Volume total movimentado: $2 BILHÕES**
-- Saldo atual: 598 BTC ≈ $41.982
+- Saldo atual: 598 BTC ≈ $41.982 (enquanto eu fazia a doc notei que estava ainda tendo muitas transações então este valor não é preciso atualmente)
 
-É importante entender que esta carteira **não recebe exclusivamente da nossa cadeia** — ela movimenta fundos de milhares de origens diferentes simultaneamente, comportamento típico de uma **exchange centralizada ou mixer profissional**. Nossa cadeia de lavagem chegou nela como uma das milhares de entradas, diluindo completamente a origem dos fundos no pool geral.
+É importante entender e ressaltar que esta carteira **não recebe exclusivamente da nossa cadeia**. Ela movimenta fundos de milhares de origens diferentes simultaneamente, comportamento típico de uma **exchange centralizada ou mixer profissional**. Inclusive analisando há diversos lançamentos para si mesma afim de poluir o Log, nossa cadeia de lavagem chegou nela como uma das milhares de entradas, diluindo completamente a origem dos fundos no pool geral.
 
 **O que é SegWit e por que o atacante migrou para ele?**
 
-SegWit (Segregated Witness) é um formato moderno de endereço Bitcoin identificado pelo prefixo `bc1q`. A migração progressiva de Legacy (`1xxx`) para SegWit ao longo das camadas não é coincidência:
+SegWit (Segregated Witness) é um formato moderno de endereço Bitcoin identificado pelo prefixo `bc1q`. A migração progressiva de Legacy (`1xxx`) para SegWit ao longo das camadas não é coincidência, segue os motivos que os atacantes optam por realizar assim:
 
-- **Taxas menores** — essencial ao mover dezenas de carteiras simultaneamente
-- **Menor rastreabilidade** em ferramentas antigas de blockchain analytics
-- **Padrão de exchanges profissionais** — facilita entrada sem levantar flags
+- **Taxas menores** : Essencial ao mover dezenas de carteiras simultaneamente
+- **Menor rastreabilidade** : Em ferramentas antigas de blockchain analytics é mais dificil rastrear
+- **Padrão de exchanges profissionais**: Facilita entrada sem levantar flags de suspeitas
 
 ---
 
@@ -218,7 +242,7 @@ Nov/2024    → Último DNS resolution de api.brighterfuture.net
 27/02/2026  → Primeiro abuse report no AbuseIPDB
 04/03/2026  → E-mail de sextortion recebido
 15/03/2026  → Segundo abuse report no AbuseIPDB
-19/03/2026  → Investigação conduzida — IP ainda ativo
+19/03/2026  → Investigação conduzida. IP ainda ativo
               Reportado no AbuseIPDB e DigitalOcean
 ```
 
@@ -231,9 +255,9 @@ O que parecia um golpe simples revelou uma operação sofisticada:
 - **Infraestrutura ativa por 3+ anos** no mesmo IP sem takedown
 - **Peel chain** para fragmentar e poluir rastro no blockchain
 - **Migração progressiva** Legacy → SegWit ao longo das camadas
-- **MySQL exposto na porta 3306** — servidor comprometido ou negligente
-- **Volume estimado da operação:** dezenas de milhões de dólares
-- **Destino final:** exchange com $2B em volume — rastreamento encerrado
+- **MySQL exposto na porta 3306**, indicando servidor comprometido ou negligente
+- **Volume estimado da operação:**, dezenas de milhões de dólares
+- **Destino final:**, exchange com $2B em volume — rastreamento encerrado
 
 A investigação chegou até onde as ferramentas públicas permitem. O próximo passo exigiria dados KYC de exchange via ordem judicial.
 
@@ -255,8 +279,8 @@ Se você recebeu um e-mail similar:
 ## 🛡️ Recomendações
 
 **Para usuários:**
-- **Nunca pagar** — as informações são falsas
-- Ativar **MFA** em todas as contas críticas
+- **Nunca pagar**: As informações são falsas! É Cilada Bino!
+- Ativar **MFA** Em todas as contas críticas!
 - Usar **senhas únicas** por serviço via gerenciador de senhas
 
 **Para analistas / blue team:**
