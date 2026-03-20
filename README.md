@@ -113,20 +113,21 @@ A porta 3306 exposta é crítica, banco de dados sem firewall, indicando servido
 
 Isto pode evidenciar uma possivel killchain(Aqui é especulação com base nos dados, mas pode sim ter sido de outra forma)
 
-Aluga/compromete VPS DigitalOcean
-        ↓
-Instala servidor SMTP (brighterfuture.net)
-        ↓
-Dispara spam em massa com SPF none
-        ↓
+Aluga/Compromete VPS DigitalOcean
+              ↓
+Instala servidor SMTP(brighterfuture.net)
+              ↓
+Dispara Spam em massa com SPF none
+              ↓
 Vítima recebe → paga Bitcoin
-        ↓
-Mixing em camadas → exchange → saque
+              ↓
+Mixing em camadas → Exchange → saque
+
 ---
 
 ### 3. Investigando os Domínios
 
-Bom levantamos uma boa quantia de informação, permitindo imaginarmos até algumas killchains possiveis, agora vamos focar nestes dominios vinculados que coletamos no UrlScan
+Bom levantamos uma boa quantia de informação, permitindo imaginarmos até algumas killchains possiveis, agora vamos focar nestes dominios vinculados que coletamos e analisar no UrlScan
 
 **`brighterfuture.net`** — domínio do servidor SMTP
 
@@ -205,7 +206,7 @@ bc1q7cyrfmck2ffu2ud3rn5l5a8yv6f0chkp0zpemf
 
 ---
 
-### 6. A Exchange — bc1q-pemf
+### 6. A Exchange — bc1q7-zpemf
 Por fim ao analisar recebimentos na carteira consolidadora, notei que ela recebe de volta valores após alguns mêses, partindo de outra carteira
 ![Exchange summary](evidence/08_blockchain_pemf_summary.png)
 ![Exchange saída](evidence/09_blockchain_pemf_saida.png)
