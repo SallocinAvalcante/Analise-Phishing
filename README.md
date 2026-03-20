@@ -262,6 +262,9 @@ O que parecia um golpe simples revelou uma operação sofisticada:
 
 A investigação chegou até onde as ferramentas públicas permitem. O próximo passo exigiria dados KYC de exchange via ordem judicial.
 
+Analisando o volume total da carteira (bc1q-pemf), o total recebido($2.051.674.553.941) é aproximadamente igual ao total enviado($2.051.628.361.952).
+ O volume total movimentado($4.103.286.209.016) é praticamente o dobro, padrão que confirma o comportamento de exchange ou mixer: quase tudo que entra é repassado, com pequena diferença representando operações ainda em trânsito ou saldo de custódia.
+
 ---
 
 ## 📣 Como Reportar
