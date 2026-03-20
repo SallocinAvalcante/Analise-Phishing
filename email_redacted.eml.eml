@@ -1,0 +1,111 @@
+Received: from CPUP215MB1787.LAMP215.PROD.OUTLOOK.COM (::1) by
+ RO2P215MB2645.LAMP215.PROD.OUTLOOK.COM with HTTPS; Wed, 4 Mar 2026 23:41:06
+ +0000
+Received: from SJ0PR13CA0001.namprd13.prod.outlook.com (2603:10b6:a03:2c0::6)
+ by CPUP215MB1787.LAMP215.PROD.OUTLOOK.COM (2603:10d6:103:142::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.18; Wed, 4 Mar
+ 2026 23:41:04 +0000
+Received: from SJ1PEPF000023D5.namprd21.prod.outlook.com
+ (2603:10b6:a03:2c0:cafe::34) by SJ0PR13CA0001.outlook.office365.com
+ (2603:10b6:a03:2c0::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.13 via Frontend Transport; Wed,
+ 4 Mar 2026 23:41:02 +0000
+Authentication-Results: spf=none (sender IP is 164.92.68.246)
+ smtp.mailfrom=api.brighterfuture.net; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=hotmail.com;compauth=fail
+ reason=001
+Received-SPF: None (protection.outlook.com: api.brighterfuture.net does not
+ designate permitted sender hosts)
+Received: from api.brighterfuture.net (164.92.68.246) by
+ SJ1PEPF000023D5.mail.protection.outlook.com (10.167.244.70) with Microsoft
+ SMTP Server id 15.20.9700.0 via Frontend Transport; Wed, 4 Mar 2026 23:41:02
+ +0000
+X-IncomingTopHeaderMarker: OriginalChecksum:752BD78C31927989127716F3A125D83976DB1B28A4009FC6CC067A72AB19BED8;UpperCasedChecksum:1613E0DB1E5E3F68AC7A91073486783F045BF73122B9291C67B4FCAF8167BE8E;SizeAsReceived:349;Count:8
+From: [REDACTED]@hotmail.com
+Content-Transfer-Encoding: 7bit
+To: <[REDACTED]@hotmail.com>
+Date: Wed, 4 Mar 2026 23:41:02 +0000
+Subject: Re:
+Content-Type: text/plain; charset="utf-8"
+Message-ID: <095e6f6f2c406f7d3031263326262c2329232a293c2f2e2d373f6d6d66696b6468793b3d3f3d4f787e667e757c7a397b7677.d40a3f5c981@hotmail.com>
+X-IncomingHeaderCount: 8
+Return-Path: microllion@api.brighterfuture.net
+X-MS-Exchange-Organization-ExpirationStartTime: 04 Mar 2026 23:41:02.2713
+ (UTC)
+X-MS-Exchange-Organization-ExpirationStartTimeReason: OriginalSubmit
+X-MS-Exchange-Organization-ExpirationInterval: 1:00:00:00.0000000
+X-MS-Exchange-Organization-ExpirationIntervalReason: OriginalSubmit
+X-MS-Exchange-Organization-Network-Message-Id: 74103545-c9d0-4c77-a247-08de7a477eda
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa:0
+X-MS-Exchange-Organization-MessageDirectionality: Incoming
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000023D5:EE_|CPUP215MB1787:EE_|RO2P215MB2645:EE_
+X-MS-Exchange-Organization-AuthSource: SJ1PEPF000023D5.namprd21.prod.outlook.com
+X-MS-Exchange-Organization-AuthAs: Anonymous
+X-MS-UserLastLogonTime: 3/4/2026 11:36:52 PM
+X-MS-Office365-Filtering-Correlation-Id: 74103545-c9d0-4c77-a247-08de7a477eda
+X-MS-Exchange-EOPDirect: true
+X-Sender-IP: 164.92.68.246
+X-SID-PRA: [REDACTED]@HOTMAIL.COM
+X-SID-Result: NONE
+X-MS-Exchange-Organization-SCL: 5
+X-Microsoft-Antispam: BCL:0;ARA:1444111002|461199028|60050799006|13020799006|7009299003|22070799003|36140799009|35120799006|29090799004|51080799003|100100799003|58200799021|14040799006|1290799033|47200799024|3412199025|440099028|2980499032|1360799030|1370799030|4210799018|4295299021|56899033|50100799040;
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2026 23:41:02.1696
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 74103545-c9d0-4c77-a247-08de7a477eda
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF000023D5.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CPUP215MB1787
+X-MS-Exchange-Transport-EndToEndLatency: 00:00:04.4582996
+X-MS-Exchange-Processed-By-BccFoldering: 15.20.9678.010
+X-Microsoft-Antispam-Mailbox-Delivery:
+	ucf:0;jmr:0;ex:0;psp:1;auth:0;dest:J;OFR:SpamFilterAuthJ;ENG:(5062000311)(920221119095)(90000117)(920221120095)(90013020)(91025020)(91040095)(9050020)(9080021)(9100341)(1018006)(944500132)(2008001181)(4810010)(4910033)(10005027)(9620004)(9525003)(10150021)(9320005)(9245025)(120001);RF:JunkEmail;
+X-Message-Delivery: Vj0xLjE7dXM9MDtsPTA7YT0wO0Q9MjtHRD0xO1NDTD02
+X-Microsoft-Antispam-Message-Info: [REDACTED - ANTISPAM METADATA]
+MIME-Version: 1.0
+
+--- EMAIL BODY ---
+
+Glances are sent your way.
+Ok. I don't have much time, so let's get straight to the point.
+I want to make you an offer that you can refuse, but only once.
+
+Here's what I have:
+Your complete personal information: full name, date of birth, home address.
+Your social security number and driver's license details.
+All your email account login credentials, including this account.
+Other login details and your private messages.
+A multitude of files found on your devices.
+Access to your bank accounts.
+The details of your credit cards: number, expiry date, and cvv.
+
+I have compiled this entire package into a single folder. I can and intend to
+do two things with it. It is up to you to decide which one:
+
+I will send this entire package to darknet markets, where other criminals will
+buy it. It is unknown how they will use this information. They may purchase
+something illegal in your name, or they may not, but you will definitely not
+like it.
+
+Or you can buy it from me for a small fee of 600 usd.
+Changing the entire package of documents and data is very expensive, very
+time-consuming, and unsafe.
+
+I already know that you have just read this text. Do not try to ignore this.
+
+I only accept payment in bitcoins at the exchange rate at the time of transfer.
+Transfer money here: 14id3vCsWLocRamkLqfb3J9jhpxTHPz59m
+
+After payment, I will delete the folder containing your data, and you can
+continue living as before or, if you don't trust me, take your time changing
+all your data. It's more profitable for me if you pay me. It's easier and
+better for everyone.
+
+This is a unique offer. Take advantage of it. I will wait for 1 day.
+
+[VICTIM NAME REDACTED]
