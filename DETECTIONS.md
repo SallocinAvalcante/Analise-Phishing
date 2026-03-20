@@ -14,9 +14,10 @@ Formato agnóstico — converta para qualquer SIEM usando o [Uncoder.IO](https:/
 title: Sextortion Campaign - Malicious Email Infrastructure
 id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
 status: experimental
-description: Detects emails from infrastructure associated with sextortion campaign
-             IP 164.92.68.246 (DigitalOcean AS14061), domains brighterfuture.net
-             and licftluimc.quest. SPF none + DMARC fail pattern.
+description: >
+  Detects emails from known malicious infrastructure associated with sextortion campaign.
+  IP 164.92.68.246 (DigitalOcean AS14061), domains brighterfuture.net and licftluimc.quest.
+  SPF none and DMARC fail may be present and should be used as supporting context during investigation.
 references:
     - https://github.com/SallocinAvalcante/Analise-Phishing
 author: Nicollas Cavalcante Souza
@@ -41,7 +42,7 @@ detection:
         DMARCResult: 'fail'
         # SenderASN: 'AS14061'
         # Campo ASN raramente disponível sem enrichment — descomente se seu ambiente suportar
-    condition: selection_ip or selection_domain or (selection_spoof and (selection_ip or selection_domain))
+    condition: selection_ip or selection_domain
 falsepositives:
     - Legitimate emails from misconfigured domains (SPF none / DMARC fail)
 level: high
