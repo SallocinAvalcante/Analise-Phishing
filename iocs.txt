@@ -1,0 +1,60 @@
+# IOCs — Sextortion Campaign Analysis
+# Data do incidente: 04/03/2026
+# Analista: Nicollas Cavalcante Souza
+# Repositório: https://github.com/SallocinAvalcante/sextortion-analysis
+
+# ============================================================
+# NETWORK
+# ============================================================
+
+[IP]
+164.92.68.246           # Servidor SMTP — DigitalOcean, Santa Clara CA — ASN AS14061
+
+[Domains]
+brighterfuture.net
+api.brighterfuture.net  # Return-Path real do atacante
+licftluimc.quest        # Domínio no certificado TLS — expirado 04/05/2023
+
+[Email]
+microllion@api.brighterfuture.net  # Return-Path real do remetente
+
+[ASN]
+AS14061                 # DigitalOcean LLC
+
+# ============================================================
+# BITCOIN WALLETS
+# ============================================================
+
+[Wallets — Rastreamento direto]
+14id3vCsWLocRamkLqfb3J9jhpxTHPz59m   # Coletora — exposta no e-mail de spam
+1Gi5sqSA6NKfkaPdMu4szv1bzt3XxCyryU   # Consolidadora — recebeu 20 inputs em 16/06/2024
+bc1qvh6rmy6j55t9gr6u29eg4qkmtwswj9r9waawyx  # SegWit intermediário — saída da consolidadora
+
+[Wallets — Peel chain (camadas intermediárias)]
+bc1qywz7lnh2w78klx2cj54zvh220vetccsemn2dsq
+1CWTFeMfPCG1Q6uVLSpHUmQ1J1i6hxj1LK
+bc1q3axh7dtnsq3vu9sqr3t72n3k5lpg2z2hcpzp37
+bc1qqaae3hvu4l4juhgwg5mhpt4mme9r8d555jgmee
+36yHeaDuLXoTnezaHZ5YwzKZfqSjcYQSjM
+bc1q9wvygkq7h9xgcp59mc6ghzczrqlgrj9k3ey9tz
+bc1qfkxgvsclvmagf6kr48fvd8km29eyrv9kt0msgu  # msgu — cascata pos-awyx
+
+[Wallets — Identificada de forma independente]
+bc1q7cyrfmck2ffu2ud3rn5l5a8yv6f0chkp0zpemf  # Exchange/Mixer — $2B em volume
+                                               # Nao rastreada diretamente como
+                                               # destino final da cadeia acima
+
+# ============================================================
+# TLS CERTIFICATE
+# ============================================================
+
+[Certificate Thumbprint]
+0c48c9e0ac4118651b3673d78ca8d4cd737f9cd5    # licftluimc.quest — expirado 04/05/2023
+
+# ============================================================
+# NOTAS
+# ============================================================
+# O rastro do blockchain se dilui em cascata ad infinitum apos bc1q-awyx
+# Ligacao direta entre a cadeia rastreada e bc1q-pemf nao foi comprovada
+# via ferramentas publicas — identificada por analise independente de relacoes
+# Investigacao reportada ao FBI IC3, DigitalOcean Abuse e AbuseIPDB
