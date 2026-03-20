@@ -299,7 +299,7 @@ Se você recebeu um e-mail similar:
 **Para analistas / blue team:**
 - Bloquear IP `164.92.68.246` e range `164.92.64.0/18`
 - Blacklist de DNS: `brighterfuture.net`, `licftluimc.quest`
-- CCriar regra no SIEM: e-mails com SPF none + DMARC fail originados de ASN de datacenter (AS14061) | Regra Sigma disponível em [DETECTIONS.md](DETECTIONS.md), conversível para qualquer SIEM via [Uncoder.IO](https://tdm.socprime.com/uncoder-ai/translate)
+- Criar regra no SIEM: e-mails com SPF none + DMARC fail originados de ASN de datacenter (AS14061) | Regra Sigma disponível em [DETECTIONS.md](DETECTIONS.md), conversível para qualquer SIEM via [Uncoder.IO](https://tdm.socprime.com/uncoder-ai/translate)
 - Adicionar carteiras Bitcoin identificadas em feeds de threat intelligence
 
 ---
