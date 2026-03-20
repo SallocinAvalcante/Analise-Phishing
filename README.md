@@ -224,7 +224,7 @@ A carteira `bc1q7cyrfmck2ffu...` (bc1q-pemf) apresenta:
 
 - **2.839.530 transações**
 - **Volume total movimentado: ~$2 BILHÕES**
-- Comportamento de receber e repassar quase tudo — total recebido (~$2.051.674.553.941) ≈ total enviado (~$2.051.628.361.952), com volume total sendo praticamente o dobro
+- Comportamento de receber e repassar quase tudo — Total recebido (~$2.051.674.553.941) / Total enviado (~$2.051.628.361.952), com volume total sendo praticamente o dobro
 
 > ⚠️ **Importante:** esta carteira **não foi rastreada diretamente** como destino final da nossa cadeia — o fluxo da `bc1q-awyx` continua em cascata ad infinitum via múltiplas camadas de peel chain e não foi possível provar a ligação direta via ferramentas públicas. A `bc1q-pemf` foi identificada de forma independente pela análise de relações e seu comportamento é **consistente com o destino final esperado** de uma operação dessa escala — exchange centralizada ou mixer profissional onde o rastro público se encerra.
 
