@@ -13,7 +13,7 @@ Este projeto documenta uma investigação OSINT conduzida a partir de um e-mail 
 
 O objetivo não foi apenas identificar o golpe, foi entender como a infraestrutura funciona, como o dinheiro se move e até onde é possível rastrear usando apenas ferramentas públicas de OSINT e threat intelligence.
 
-**Spoiler:** fui atrás de uma pena achando que seria um scam aleatório sem muita operação e achei uma galinha.
+**Spoiler:** fui atrás achando que seria um scam aleatório sem muita operação e acabei encontrando indicativos de uma possível estrutura utilizada para lavagem de valores vindos de scams ou outras atividades maliciosas
 
 ---
 
@@ -64,9 +64,9 @@ dest:J;OFR:SpamFilterAuthJ
 ```
 
 O que cada campo e tag revelou:
-- **SPF none** : o domínio não autorizou o IP para envio → spoofing confirmado
+- **SPF none** : domínio sem política SPF definida → ausência de validação de origem (comum em abusos)
 - **DKIM none** : e-mail sem assinatura digital → não autenticado
-- **DMARC fail** : falha total de autenticação → remetente forjado
+- **DMARC fail** : falha de autenticação (SPF/DKIM) → possível spoofing ou envio não autorizado
 - **Return-Path** : diferente do `From:` → endereço real do atacante exposto: `microllion@api.brighterfuture.net`
 - **SCL:5 / dest:J** : Microsoft classificou como suspeito e entregou na pasta Junk
 
@@ -109,9 +109,9 @@ O Shodan serviu para entendermos o que pode ter sido a possível killchain do at
 | 443 | HTTPS | Erro TLS — mal configurado ou server abandonado |
 | **3306** | **MySQL 8.0.42** | **⚠️ Banco de dados exposto publicamente** |
 
-A porta 3306 exposta é crítica — banco de dados sem firewall, indicando servidor comprometido ou operado negligentemente.
+A porta 3306 exposta é crítica, banco de dados sem firewall, é uma má configuração ou uso deliberado que indica comprometimento, sendo necessário validação adicional.
 
-Isso evidencia uma possível killchain *(especulação com base nos dados, pode ter sido de outra forma)*:
+**Hipótese de cadeia de ataque (baseada nos dados observados)**
 
 ```
 Aluga/Compromete VPS DigitalOcean
@@ -136,7 +136,7 @@ Com uma boa quantidade de informação levantada, o próximo passo foi analisar 
 ![URLScan](evidence/04_urlscan_brighterfuture.png)
 
 - Registrado: 08/09/2022 via GoDaddy
-- Status: `clientDeleteProhibited`, `clientTransferProhibited` — ninguém pode deletar ou transferir o domínio, indicando que o GoDaddy já pode estar investigando
+- Status: 'clientDeleteProhibited', 'clientTransferProhibited'— mecanismo padrão de proteção de domínio (Registrar Lock)
 - URLScan retornou **HTTP 502** — servidor abandonado
 - Expira: 08/09/2026
 
@@ -191,7 +191,7 @@ R$ 84.000 consolidados (20 inputs)
 bc1qywz7lnh2w78...  →  bc1q3axh7dtnsq3... (peel chain — fragmenta e polui log)
 1CWTFeMfPCG1Q6u...  →  bc1qqaae3hvu4l4... → 36yHeaDuLXoTnez...
         |
-        | 21/08/2024 — 80 inputs consolidados → R$ 560.000
+        | 
         ↓
 bc1q9wvygkq7h9xgcp59mc6ghzczrqlgrj9k3ey9tz
         |
@@ -224,9 +224,9 @@ A carteira `bc1q7cyrfmck2ffu...` (bc1q-pemf) apresenta:
 
 - **2.839.530 transações**
 - **Volume total movimentado: ~$2 BILHÕES**
-- Comportamento de receber e repassar quase tudo — Total recebido (~$2.051.674.553.941) / Total enviado (~$2.051.628.361.952), com volume total sendo praticamente o dobro
+- Comportamento de receber e repassar quase tudo — Total recebido ($2.051.674.553.941) / Total enviado ($2.051.628.361.952), com volume total sendo praticamente o dobro
 
-> ⚠️ **Importante:** esta carteira **não foi rastreada diretamente** como destino final da nossa cadeia — o fluxo da `bc1q-awyx` continua em cascata ad infinitum via múltiplas camadas de peel chain e não foi possível provar a ligação direta via ferramentas públicas. A `bc1q-pemf` foi identificada de forma independente pela análise de relações e seu comportamento é **consistente com o destino final esperado** de uma operação dessa escala — exchange centralizada ou mixer profissional onde o rastro público se encerra.
+> ⚠️ **Importante:** esta carteira **não foi rastreada diretamente**. Como destino final da nossa cadeia o fluxo da `bc1q-awyx` continua em cascata ad infinitum via múltiplas camadas de peel chain e não foi possível provar a ligação direta via ferramentas públicas. A `bc1q-pemf` foi identificada de forma independente pela análise de relações e seu comportamento é **consistente com o destino final esperado** de uma operação dessa escala — exchange centralizada ou mixer profissional onde o rastro público se encerra.
 
 É importante ressaltar que esta carteira **não recebe exclusivamente da nossa cadeia**. Ela movimenta fundos de milhares de origens simultaneamente. Nossa cadeia de lavagem, se chegou até ela, seria apenas uma das milhares de entradas, diluindo completamente a origem dos fundos no pool geral.
 
@@ -263,14 +263,14 @@ Nov/2024    → Último DNS resolution de api.brighterfuture.net
 
 ## 🧠 Conclusão
 
-O que parecia um golpe simples revelou uma operação sofisticada:
+O que parecia um golpe simples revelou indícios de uma operação estruturada:
 
-- **Infraestrutura ativa por 3+ anos** — no mesmo IP sem takedown
-- **Peel chain** — para fragmentar e poluir rastro no blockchain
-- **Migração progressiva** — Legacy → SegWit ao longo das camadas
-- **MySQL exposto na porta 3306** — servidor comprometido ou negligente
-- **Volume estimado da operação** — dezenas de milhões de dólares
-- **Rastro público encerrado** — em cascata de peel chain ad infinitum
+- **Infraestrutura ativa por 3+ anos** — associada ao mesmo IP sem evidência de takedown
+- **Peel chain** — técnica utilizada para fragmentar valores e dificultar rastreamento no blockchain
+- **Migração progressiva** — Legacy → SegWit ao longo das camadas de transação
+- **MySQL exposto na porta 3306** — possível má configuração ou exposição indevida, exigindo validação adicional
+- **Indícios de operação em larga escala** — com múltiplas carteiras e movimentações financeiras relevantes
+- **Rastro público limitado** — diluído em múltiplas camadas de peel chain, dificultando correlação direta via ferramentas públicas
 
 A investigação chegou até onde as ferramentas públicas permitem. O próximo passo exigiria ferramentas de blockchain forensics profissionais (Chainalysis, CipherTrace) ou dados KYC de exchange via ordem judicial.
 
