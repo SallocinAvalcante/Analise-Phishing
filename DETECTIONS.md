@@ -39,10 +39,11 @@ detection:
     selection_spoof:
         SPFResult: 'none'
         DMARCResult: 'fail'
-        SenderASN: 'AS14061'
-    condition: selection_ip or selection_domain or selection_spoof
+        # SenderASN: 'AS14061'
+        # Campo ASN raramente disponível sem enrichment — descomente se seu ambiente suportar
+    condition: selection_ip or selection_domain or (selection_spoof and (selection_ip or selection_domain))
 falsepositives:
-    - Legitimate emails from DigitalOcean infrastructure (unlikely with SPF none + DMARC fail)
+    - Legitimate emails from misconfigured domains (SPF none / DMARC fail)
 level: high
 ```
 
